@@ -1,0 +1,33 @@
+#!/usr/bin/php
+<?php
+
+
+require 'autoload.php';
+
+
+$Loader = new Pboy\Loader\Loader;
+
+
+$Conf = $Loader->getService('Config', 'Ini');
+
+
+$Cli        = $Loader->getService('Cli',        $Conf);
+$Input      = $Loader->getService('Input',      $Conf);
+$Parser     = $Loader->getService('Parser',     $Conf);
+$Renderer   = $Loader->getService('Renderer',   $Conf);
+
+
+$items = $Input->getItems('posts');
+
+
+
+foreach ($items as $index => $item) {
+    $items[$index] = $Parser->parse($item);
+}
+
+
+$Renderer->render($items);
+
+
+$Cli->write('Done');
+
