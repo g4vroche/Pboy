@@ -41,7 +41,7 @@ class Ini extends Component implements ConfigInterface
     public function __get($propertyName)
     {
         if (!array_key_exists($propertyName, $this->data)) {
-            throw new \Exception("Unknow property <$propertyName>");
+            throw new \DomainException("Unknow property <$propertyName>");
         }
 
         return $this->data[$propertyName];
@@ -56,7 +56,7 @@ class Ini extends Component implements ConfigInterface
 
     public function save()
     {
-        throw new \Exception(__METHOD__ ." is not implemented !");
+        throw new \BadMethodCallException(__METHOD__ ." is not implemented !");
     }
 
 }
