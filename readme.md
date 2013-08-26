@@ -1,13 +1,14 @@
 
-PHP Static Blog Generator
-=========================
+PBoy 
+====
+
+An attempt to create a basic static blog generator in PHP.
+
+Wrok in progress, not functional yet.
 
 
-A basic static blog generator written in PHP.
-
-
-
-Features : 
+Features aimed :
+----------------
 
 Generates full blog from input
 
@@ -16,27 +17,27 @@ Plugin mechnism allow to add differents sources and formats
 
 Items fetching :
  - File system
- - *
+ - ?
 
 Items parsing :
- - restructuredText
+ - restructuredText *(going to be hard with PHP)*
  - markdown
- - wiki
- - BBcode
- - * 
+ - wiki ?
+ - BBcode ?
+ - Other ? 
 
 
 Rendering :
  - raw PHP
- - Twig
- - *
+ - Twig ?
+ - Other ?
 
 Syntax highlighting
- - JS based
+ - JS based ?
 
 Versionning
- - Git plugin
- - SVN plugin
+ - Git plugin ?
+ - SVN plugin ?
 
 
 Assets optimisation : Join + Minification
@@ -44,12 +45,21 @@ Assets optimisation : Join + Minification
 
 
 Multiple outputs for 
- - item list
- - items
+ - item list (HTML, RSS, whatever)
+ - item view (blog post)
 
 Allows you to generate : 
  - home / index page
  - tags pages
+ - ?
 
+
+Constraints
+-----------
+
+* Try being complient with PSR
+* Keep this basic but extensible (but basic)
+* Really easy setup
+* Minimize dependencies
 
 
