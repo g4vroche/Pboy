@@ -125,7 +125,7 @@ class Loader
     {
         if (!array_key_exists($dependency, $this->tree['global'])) {
             $this->tree['global'][$dependency] =
-                $this->getService($dependency, $Config, true);
+                $this->getService($dependency, $Config, false, true);
         }
 
         return $this->tree['global'][$dependency];
@@ -143,7 +143,7 @@ class Loader
     {
        if (!array_key_exists($dependency, $this->tree['shared'][$service])) {
            $this->tree['shared'][$service][$dependency] =
-            $this->getService($dependency, $Config, true);
+            $this->getService($dependency, $Config, false, true);
        }
 
        return $this->tree['shared'][$service][$dependency];
@@ -159,7 +159,7 @@ class Loader
      */
     private function loadSingleDependency($service, $dependency, $Config)
     {
-        return $this->getService($dependency, $Config, true);
+        return $this->getService($dependency, $Config, false, true);
     }
 
     private function hasConfigObject($variable)
