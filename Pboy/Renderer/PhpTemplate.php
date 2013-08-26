@@ -30,9 +30,6 @@ class PhpTemplate extends RendererAbstract
 
         $this->outputPath = $output_path;
 
-        $this->Cli->write(print_r($config,1));
-
-        
         if ($this->Config->Rendering['views'][$view] == 'item') {
             $this->renderItem($items, $view);
 
