@@ -3,8 +3,9 @@
 /**
  * PSR-0 complient autoload
  * Taken from https://gist.github.com/Thinkscape/1234504
+ * Added file exists check to comply with spl_autoload
  */
-function Pboy_autoload( $className )
+function Pboy_autoload($className)
 {
     $className = ltrim($className, '\\');
     $fileName  = '';
@@ -16,7 +17,9 @@ function Pboy_autoload( $className )
     }
     $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
 
-    require $fileName;
+    if (file_exists($fileName)) {
+        require $fileName;
+    }
 }
 
 spl_autoload_register( 'Pboy_autoload' );
