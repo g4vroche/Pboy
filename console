@@ -12,22 +12,22 @@ $Conf = $Loader->getService('Config', 'Ini');
 
 
 $Cli        = $Loader->getService('Cli',        $Conf);
-$Input      = $Loader->getService('Input',      $Conf);
-$Parser     = $Loader->getService('Parser',     $Conf);
-$Renderer   = $Loader->getService('Renderer',   $Conf);
+$Task       = $Loader->getService('Task',       $Conf);
+
+array_shift($argv);
+
+$task = array_pop($argv);
 
 
-$items = $Input->getItems('posts');
+if ($task) {
+    $status = $Task->execute($task);
 
+    if ($status) {
+        $Cli->write('Done');
+    }
 
+} else {
+    $Cli->write($Task->execute('synopsis'));
 
-foreach ($items as $index => $item) {
-    $items[$index] = $Parser->parse($item);
 }
-
-
-$Renderer->render($items);
-
-
-$Cli->write('Done');
 

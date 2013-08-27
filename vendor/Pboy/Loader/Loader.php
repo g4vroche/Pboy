@@ -56,7 +56,13 @@ class Loader
         $class = "\\Pboy\\$service\\";
 
         if ($this->hasConfigObject($Config)) {
-            $class .= $Config->get("services:$service:Class");
+            $configured = $Config->get("services:$service:Class");
+
+            if (substr($configured, 0, 1) == '\\') {
+                $class = $configured;
+            } else {
+                $class .= $configured;
+            }
 
         } elseif(is_string($Config)) {
             $class .= $Config;

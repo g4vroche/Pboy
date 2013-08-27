@@ -12,6 +12,4 @@ interface CliInterface
 
     public function read($question);
 
-
-    public function execute($command);
 }

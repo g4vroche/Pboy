@@ -73,7 +73,10 @@ class Ini extends ConfigAbstract
 
     private function offsets($propertyPath)
     {
-        return explode(self::OFFSET_SEP, $propertyPath);
+        // Split by separator 
+        //  - not followed by another separator 
+        //  - nor being the last char of the string
+        return preg_split( '/'.self::OFFSET_SEP.'(?!:|\z)/', $propertyPath);
     }
 
     private function loadIfNeeded($propertyPath)

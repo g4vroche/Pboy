@@ -30,23 +30,10 @@ class Bash extends CliAbstract
         return rtrim(shell_exec($command));
     }
 
-
-    public function execute($task)
+    public function options($arguments)
     {
-        if (!$param = $this->getTask($task)) {
-            throw new \InvalidArgumentException("Unknow task: $task");
-        }
-    }
+        $taskName = $arguments[1];
 
-    private function getTask($task)
-    {
-        try{
-            return $this->Config->get("tasks:$task");
-        }
-        catch (\DomainException $e)
-        {
-            return false;
-        }
     }
 
 }
