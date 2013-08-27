@@ -16,7 +16,7 @@ class Ini extends Component implements ConfigInterface
 
     private $data;
     
-    public function __construct($dependencies)
+    public function __construct($dependencies = array() )
     {
         parent::__construct($dependencies);
 

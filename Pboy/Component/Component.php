@@ -16,7 +16,7 @@ abstract class Component
      * @param array $dependecies Hash with dependency name as key
      *     and object as value
      */
-    public function __construct($dependencies)
+    public function __construct($dependencies = array())
     {
         foreach ($dependencies as $dependency => $Object) {
             $this->$dependency = $Object;
