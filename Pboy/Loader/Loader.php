@@ -56,7 +56,7 @@ class Loader
         $class = "\\Pboy\\$service\\";
 
         if ($this->hasConfigObject($Config)) {
-            $class .= $Config->Providers[$service];
+            $class .= $Config->get("services:$service:Class");
 
         } elseif(is_string($Config)) {
             $class .= $Config;
@@ -104,10 +104,10 @@ class Loader
      */
     private function getDependencies($service, $Config)
     {
-        $provider = $Config->Providers[$service];
+        $provider = $Config->get("services:$service:Class");
         
-        if (array_key_exists('dependencies', $Config->$provider)) {
-            return $Config->{$provider}['dependencies'];
+        if (array_key_exists('dependencies', $Config->get("providers:$provider"))) {
+            return $Config->get("providers:$provider:dependencies");
         }
 
         return array();

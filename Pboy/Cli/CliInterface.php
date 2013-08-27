@@ -10,7 +10,7 @@ interface CliInterface
     public function progress($message);
 
 
-    public function read($question, $input);
+    public function read($question);
 
 
     public function execute($command);
