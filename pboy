@@ -1,23 +1,51 @@
 #!/usr/bin/php
 <?php
 
-
+/*  ____ Include autoloads ________________________________
+    
+    Composer's autoload first, then our built-in
+*/
+require 'vendor/autoload.php';
 require 'autoload.php';
 
 
-$Loader = new Pboy\Loader\Loader;
+/*  ____ Init Config ______________________________________
+
+    Class has to be hard coded since Loader needs a Config
+    object to do its job.
+    This also means than Config object, at least when loaded
+    from here, has no dependencies managed.
+*/
+$Config = new Pboy\Config\Ini;
 
 
-$Conf = $Loader->getService('Config', 'Ini');
+/*  ____ Init Loader ______________________________________
+
+    As for Config, class is hard coded here.
+    Dependencies are self managed but Config is hard-loaded
+*/
+$Loader = new Pboy\Loader\Loader(
+                array('Config' => $Config)
+            );
 
 
-$Io         = $Loader->getService('Io', $Conf);
-$Task       = $Loader->getService('Task', $Conf);
+/*  ____ Init more needed classes  ________________________
+    
+    $Io to say something
+    $Task to do something
+*/
+$Io     = $Loader->getService('Io');
+$Task   = $Loader->getService('Task');
 
-array_shift($argv);
 
+/*  ____ Execution ________________________________________
+
+    For now command has to be after arguments due to getopt()
+    using some global variable that we can't rewrite.
+    This only fact makes it untestable and suggest we should
+    add our own options parser (or some free lib).
+*/
 $task = array_pop($argv);
-
 
 if ($task) {
     $status = $Task->execute($task);

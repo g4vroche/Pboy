@@ -18,7 +18,7 @@ class Task extends TaskAbstract
         
         $options = $this->getOptions($task);
 
-        $Service = $this->Loader->getService($params['service'], $this->Config);
+        $Service = $this->Loader->getService($params['service']);
 
         return call_user_func(array($Service, $params['method']), $options);
     }
@@ -32,7 +32,7 @@ class Task extends TaskAbstract
     private function get($task)
     {
         try{
-            return $this->Config->get("tasks:$task");
+            return $this->Config['tasks'][$task];
         }
         catch (\DomainException $e)
         {
@@ -59,8 +59,8 @@ class Task extends TaskAbstract
     {
         $options = array('short' => array( 't:'), 'long' => array( 'task:') );
         
-        if (array_key_exists('arguments', $this->Config->get("tasks:$task"))) {
-            foreach ($this->Config->get("tasks:$task:arguments") as $flags => $description) {
+        if (array_key_exists('arguments', $this->Config['tasks'][$task])) {
+            foreach ($this->Config['tasks'][$task]['arguments'] as $flags => $description) {
                 $options = array_merge_recursive($options, $this->parseOption($flags));
             }
         }
@@ -88,10 +88,10 @@ class Task extends TaskAbstract
 
     public function synopsis()
     {
-        $result = 'Pboy v.'.$this->Config->get('conf:Pboy:version')."\n";
+        $result = 'Pboy v.'.$this->Config['conf']['Pboy']['version']."\n";
         $result .= "Tasks:\n";
 
-        foreach ($this->Config->get('tasks') as $name => $params) {
+        foreach ($this->Config['tasks'] as $name => $params) {
             
             $result .= "\t$name: ". $params['description']."\n";
 

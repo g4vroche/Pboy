@@ -18,6 +18,11 @@ abstract class Component
      */
     public function __construct($dependencies = array())
     {
+        $this->assignDependencies($dependencies);
+    }
+
+    protected function assignDependencies($dependencies)
+    {
         foreach ($dependencies as $dependency => $Object) {
             $this->$dependency = $Object;
         }
