@@ -1,34 +1,34 @@
 <?php
 
-use Pboy\Cli\Cli;
+use Pboy\Io\Bash;
 
-class CliTest extends PHPUnit_Framework_TestCase
+class BashTest extends PHPUnit_Framework_TestCase
 {
 
     public function testWrite()
     {
-        $Cli = new Cli;
+        $Bash = new Bash;
 
         $this->expectOutputString("foo\n");
 
-        $Cli->write('foo');
+        $Bash->write('foo');
         
         $this->expectOutputString("foo\nbar\n");
 
-        $Cli->write('bar');
+        $Bash->write('bar');
     }
 
     public function testProgress()
     {
-        $Cli = new Cli;
+        $Bash = new Bash;
 
         $this->expectOutputString("foo\r");
 
-        $Cli->progress('foo');
+        $Bash->progress('foo');
 
         $this->expectOutputString("foo\rbar\r");
 
-        $Cli->progress('bar');
+        $Bash->progress('bar');
     }
 
 

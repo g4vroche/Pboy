@@ -1,9 +1,9 @@
 <?php
 
-namespace Pboy\Cli;
+namespace Pboy\Io;
 
 
-class Bash extends CliAbstract
+class Bash extends IoAbstract
 {
     public function write($message, $type = 'info')
     {

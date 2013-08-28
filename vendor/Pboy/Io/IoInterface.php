@@ -1,8 +1,8 @@
 <?php
 
-namespace Pboy\Cli;
+namespace Pboy\Io;
 
-interface CliInterface
+interface IoInterface
 {
     public function write($message, $type = 'info');
 

@@ -11,8 +11,8 @@ $Loader = new Pboy\Loader\Loader;
 $Conf = $Loader->getService('Config', 'Ini');
 
 
-$Cli        = $Loader->getService('Cli',        $Conf);
-$Task       = $Loader->getService('Task',       $Conf);
+$Io         = $Loader->getService('Io', $Conf);
+$Task       = $Loader->getService('Task', $Conf);
 
 array_shift($argv);
 
@@ -23,11 +23,11 @@ if ($task) {
     $status = $Task->execute($task);
 
     if ($status) {
-        $Cli->write('Done');
+        $Io->write('Done');
     }
 
 } else {
-    $Cli->write($Task->execute('synopsis'));
+    $Io->write($Task->execute('synopsis'));
 
 }
 
