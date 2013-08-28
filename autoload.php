@@ -17,7 +17,7 @@ function Pboy_autoload($className)
     }
     $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
     
-    $fileName = 'vendor'. DIRECTORY_SEPARATOR.$fileName;
+    $fileName = DIRECTORY_SEPARATOR.$fileName;
 
     if (file_exists($fileName)) {
         require $fileName;
