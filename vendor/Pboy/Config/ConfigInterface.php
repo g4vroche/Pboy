@@ -6,8 +6,5 @@ interface ConfigInterface
 {
     public function load($fileName);
 
-    public function get($propertyName);
-
-
 }
 

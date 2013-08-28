@@ -13,7 +13,7 @@ class FileSystem extends InputAbstract
      */
     public function getItemsList($source)
     {
-        $pattern = $this->Config->get('providers:FileSystem:file_type_pattern');
+        $pattern = $this->Config['providers']['FileSystem']['file_type_pattern'];
 
         $fileNames = scandir( $source );
 

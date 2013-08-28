@@ -10,26 +10,13 @@ class Ini extends ConfigAbstract
     /**
      * Default config file
      */
-    const MAIN_FILE     = 'conf';
-
     const SUFFIX        = '.ini';
 
     const PATH          = 'Conf/';
 
-    const OFFSET_SEP    = ':';
+    private $data = array();
 
-    
-    private $fileName;
 
-    private $data;
-    
-    public function __construct($dependencies = array())
-    {
-        parent::__construct($dependencies);
-
-        $this->load(self::MAIN_FILE);
-    }
-    
     /**
      * Loads configuration into the object
      *
@@ -38,56 +25,41 @@ class Ini extends ConfigAbstract
      */
     public function load($fileName)
     {
-        $this->fileName = self::PATH.$fileName.self::SUFFIX;
+        $file = self::PATH.$fileName.self::SUFFIX;
 
-        if (!is_readable($this->fileName)) {
+        if (!is_readable($file)) {
             throw new \DomainException( "Wrong offset: $fileName (can't read file)");
         }
 
-        $this->data[$fileName] = parse_ini_file($this->fileName, true);
-
-        return $this;
+        $this->data[$fileName] = parse_ini_file($file, true);
     }
 
-    public function get($propertyPath)
+    private function loadIfNeeded($offset)
     {
-        $this->loadIfNeeded($propertyPath);
-
-        $property = $this->data;
-
-        foreach ($this->offsets($propertyPath) as $offset) {
-            $property = $this->find($property, $offset);
-        }
-
-        return $property;
-    }
-
-    private function find($property, $offset)
-    {
-        if (!array_key_exists($offset, $property)) {
-            throw new \DomainException( "Wrong offset: $offset (no such offset)");
-        }
-
-        return $property[$offset];
-    }
-
-    private function offsets($propertyPath)
-    {
-        // Split by separator 
-        //  - not followed by another separator 
-        //  - nor being the last char of the string
-        return preg_split( '/'.self::OFFSET_SEP.'(?!:|\z)/', $propertyPath);
-    }
-
-    private function loadIfNeeded($propertyPath)
-    {
-        $fileName = current($this->offsets($propertyPath));
-
-        if (!array_key_exists($fileName, $this->data)) {
-            $this->load($fileName);
+        if (!$this->offsetExists($offset)) {
+            $this->load($offset);
         }
     }
 
+    public function offsetSet($offset, $value) {
+        if (is_null($offset)) {
+            $this->data[] = $value;
+        } else {
+            $this->data[$offset] = $value;
+        }
+    }
+    public function offsetExists($offset) {
+        return isset($this->data[$offset]);
+    }
 
+    public function offsetUnset($offset) {
+        unset($this->data[$offset]);
+    }
+
+    public function offsetGet($offset) {
+        $this->loadIfNeeded($offset);
+
+        return isset($this->data[$offset]) ? $this->data[$offset] : null;
+    }
 
 }

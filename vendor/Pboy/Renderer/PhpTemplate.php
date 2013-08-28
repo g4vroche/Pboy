@@ -12,7 +12,7 @@ class PhpTemplate extends RendererAbstract
      */
     public function render($items)
     {
-        foreach ($this->Config->get('conf:Rendering:views') as $view => $type) {
+        foreach ($this->Config['conf']['Rendering']['views'] as $view => $type) {
             $this->renderView($view, $items);
         }
     }
@@ -25,12 +25,9 @@ class PhpTemplate extends RendererAbstract
      */
     public function renderView($view, $items)
     {
-        $config = $this->Config->get('providers:PhpTemplate');
-        extract( $config );
+        $this->outputPath = $this->Config['providers']['PhpTemplate']['output_path'];
 
-        $this->outputPath = $output_path;
-
-        if ($this->Config->get("conf:Rendering:views:$view") == 'item') {
+        if ($this->Config['conf']['Rendering']['views'][$view] == 'item') {
             $this->renderItem($items, $view);
 
         } else {
@@ -77,14 +74,10 @@ class PhpTemplate extends RendererAbstract
      */
     private function renderData($data, $template)
     {
-        $config = $this->Config->get('providers:PhpTemplate');
-        extract( $config );
+        $conf = $this->Config['providers']['PhpTemplate']['templates'];
 
         ob_start();
-
-        $template = "$templates_path/$template.$templates_suffix";
-
-        include $template;
+        include $conf['path'].$template.$conf['suffix'];
 
         return ob_get_clean();
     }
