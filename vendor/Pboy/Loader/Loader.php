@@ -24,11 +24,6 @@ class Loader extends Component
     /**
      * Instanciate an object for the asked service,
      * choosing the class to instantiate according to $service
-     * and :
-     *
-     *  a) Configuration if $Config is given and is a Pboy\Config Object
-     *  b) Given name if $Config is a string
-     *  c) $service if no $Config is provided
      *
      * @param string $service Name of the service to load
      * @param mixed string|Pboy\Config : If string, it is the name of the class
