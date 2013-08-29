@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Handles input from file system:
+ * The input data is to be found in some files
+ * we will found according to configuration
+ */
 namespace Pboy\Input;
 
 class FileSystem extends InputAbstract
@@ -26,9 +30,10 @@ class FileSystem extends InputAbstract
 
         return $fileNames;
     }
-    
+
+
     /**
-     * Gets the items to process
+     * Gets all the items to process
      *
      * @param string $source Path to files
      * @return array file contents
@@ -43,14 +48,6 @@ class FileSystem extends InputAbstract
 
         return $items;
     }
-    
-    /**
-     *
-     */
-    public function getItem($source, $identifier)
-    {
-    }
-
 
 
 }
