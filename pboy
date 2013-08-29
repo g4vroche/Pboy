@@ -6,7 +6,6 @@
     Composer's autoload first, then our built-in
 */
 require 'vendor/autoload.php';
-require 'autoload.php';
 
 
 /*  ____ Init Config ______________________________________
@@ -38,6 +37,11 @@ $Io     = $Loader->getService('Io');
 $Task   = $Loader->getService('Task');
 
 
+$var = $Config['conf']['Pboy'];
+
+
+echo $var['version']."\n";
+
 /*  ____ Execution ________________________________________
 
     For now command has to be after arguments due to getopt()
@@ -45,6 +49,9 @@ $Task   = $Loader->getService('Task');
     This only fact makes it untestable and suggest we should
     add our own options parser (or some free lib).
 */
+
+array_shift($argv);
+
 $task = array_pop($argv);
 
 if ($task) {
