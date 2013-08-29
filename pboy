@@ -37,11 +37,6 @@ $Io     = $Loader->getService('Io');
 $Task   = $Loader->getService('Task');
 
 
-$var = $Config['conf']['Pboy'];
-
-
-echo $var['version']."\n";
-
 /*  ____ Execution ________________________________________
 
     For now command has to be after arguments due to getopt()
