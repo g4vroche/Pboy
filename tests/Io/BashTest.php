@@ -33,7 +33,8 @@ class BashTest extends PHPUnit_Framework_TestCase
         $Bash->progress('bar');
     }
 
-    public function testGetOptionsReturnsTaskAndOptions()
+
+    public function BashProvider()
     {
         // ___ Fixtures ___________________________________
         $config = array(
@@ -41,15 +42,19 @@ class BashTest extends PHPUnit_Framework_TestCase
                         array('b', 'bar', 1),
                         array('f', 'foo', 2)
                     );
-        $argv   = array('./pboy', 'test', '-a', '--bar=foo');
+        
+        $task = 'test';
 
-        $expected = array('a' => 1, 'bar' => 'foo', 'b' => 'foo');
+        $argv   = array('./pboy', $task, '-a', '--bar=foo');
+
+        $arguments = array('a' => 1, 'bar' => 'foo', 'b' => 'foo');
+
         // ________________________________________________
 
 
         $Task = $this->getMock('Task', array('options'));
 
-        $Task->expects($this->once())
+        $Task->expects($this->any())
                 ->method('options')
                 ->will($this->returnValue($config));
 
@@ -61,15 +66,29 @@ class BashTest extends PHPUnit_Framework_TestCase
                 'Getopt' => $Getopt
                 ));
 
-
         $Bash->argv = $argv;
 
-        $this->assertEquals('test', $Bash->getTask());
-
-        $this->assertEquals($expected, $Bash->getOptions('test'));
-
-
+        return array(
+            array($Bash, $task, $arguments)
+        );
     }
+
+    /**
+     * @dataProvider BashProvider
+     */
+    public function testGetTaskName($Bash, $task)
+    {
+        $this->assertEquals('test', $Bash->getTask());
+    }
+
+    /**
+     * @dataProvider BashProvider
+     */
+    public function testGetOptionsReturnParsedOptions($Bash, $task, $arguments)
+    {
+        $this->assertEquals($arguments, $Bash->getOptions('test'));
+    }
+
 
 
 }

@@ -15,9 +15,11 @@ class FileSystem extends InputAbstract
      * @param string $source Path to files
      * @return array file names
      */
-    public function getItemsList($source)
+    public function getItemsList($source, $pattern = null)
     {
-        $pattern = $this->Config['providers']['FileSystem']['file_type_pattern'];
+        if (!$pattern) {
+            $pattern = $this->Config['providers']['FileSystem']['file_type_pattern'];
+        }
 
         $fileNames = scandir( $source );
 
@@ -28,7 +30,7 @@ class FileSystem extends InputAbstract
             }
         }
 
-        return $fileNames;
+        return array_values($fileNames);
     }
 
 
@@ -38,12 +40,12 @@ class FileSystem extends InputAbstract
      * @param string $source Path to files
      * @return array file contents
      */
-    public function getItems($source)
+    public function getItems($source, $pattern = null)
     {
         $items = array();
 
-        foreach ($this->getItemsList( $source ) as $itemPath) {           
-            $items[$itemPath] = file_get_contents("$source/$itemPath");
+        foreach ($this->getItemsList($source, $pattern) as $itemPath) {           
+            $items[$itemPath] = trim(file_get_contents("$source/$itemPath"));
         }
 
         return $items;
