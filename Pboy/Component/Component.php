@@ -18,7 +18,9 @@ abstract class Component
      */
     public function __construct($dependencies = array())
     {
-        $this->assignDependencies($dependencies);
+        if (!is_null($dependencies)) {
+            $this->assignDependencies($dependencies);
+        }
     }
 
     protected function assignDependencies($dependencies)

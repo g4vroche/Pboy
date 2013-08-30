@@ -10,14 +10,12 @@ class Task extends TaskAbstract
      * @param string $task  Name of the task
      * @return mixed        Result returned by the execution
      */
-    public function execute($task)
+    public function execute($task, $options = array())
     {
         if (!$params = $this->get($task)) {
             throw new \InvalidArgumentException("Unknow task: $task");
         }
         
-        $options = $this->getOptions($task);
-
         $Service = $this->Loader->getService($params['service']);
 
         return call_user_func(array($Service, $params['method']), $options);
@@ -31,21 +29,10 @@ class Task extends TaskAbstract
      */
     private function get($task)
     {
-        try{
+        if (isset($this->Config['tasks'][$task])) {
             return $this->Config['tasks'][$task];
         }
-        catch (\DomainException $e)
-        {
-            return false;
-        }
-    }
-
-
-    public function getOptions($task)
-    {
-        extract($this->options($task));
-
-        return getopt(implode('', $short), $long);
+        return false;
     }
 
 
@@ -57,29 +44,54 @@ class Task extends TaskAbstract
      */
     public function options($task)
     {
-        $options = array('short' => array( 't:'), 'long' => array( 'task:') );
-        
-        if (array_key_exists('arguments', $this->Config['tasks'][$task])) {
-            foreach ($this->Config['tasks'][$task]['arguments'] as $flags => $description) {
-                $options = array_merge_recursive($options, $this->parseOption($flags));
+        $options = array();
+
+        if (!$this->exists($task)) {
+
+            if ($arguments = $this->arguments($task)) {
+
+                foreach ($arguments as $flags => $description) {
+                    $options[] = $this->parseOption($flags, $description);
+                }
             }
         }
 
         return $options;
     }
-    
-    private function parseOption($flags)
+
+
+    /**
+     * Gets task arguments
+     *
+     * @param string $task  Task name
+     * @return array|bool   Arguments array or false if non exists
+     */
+
+    private function arguments($task)
     {
-        $options = array('short'=>array(), 'long'=>array());
-
-        preg_match_all( '/([a-z0-9]+)(:*)/i', $flags, $matches);
-
-        foreach ($matches[1] as $index => $match) {
-            $options[$this->optionType($match)] = $match.$matches[2][$index];
+        if (isset($this->Config['tasks'][$task]['arguments'])) {
+            return $this->Config['tasks'][$task]['arguments'];
         }
 
-        return $options;
+        return false;
     }
+
+
+    private function exists($task)
+    {
+        return isset($this->Config['tasks'][$task]);
+    }
+
+
+    private function parseOption($flags, $description)
+    {
+        $option     = explode('|', $flags);
+        $option[2]  = (int)$option[2];
+        $option[]   = $description;
+
+        return $option;
+    }
+    
 
     private function optionType($option)
     {

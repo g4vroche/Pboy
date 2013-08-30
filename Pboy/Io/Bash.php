@@ -6,6 +6,40 @@ namespace Pboy\Io;
 
 class Bash extends IoAbstract
 {
+
+    /**
+     * Main task invoked on script call
+     *
+     * @var string
+     */
+     private $task;
+        
+    /**
+     * Options passed to task
+     *
+     * @var array
+     */
+     private $options;
+    
+
+    /**
+     * Internal copy of argv
+     * @var string
+     */
+     public $argv;
+
+    
+    /**
+     * Call parent constuctor 
+     * and preset $argv member
+     */
+    public function __construct($dependencies = array())
+    {
+        parent::__construct($dependencies);
+
+        $this->argv = $_SERVER['argv'];
+    }
+
     /**
      * Outputs content to the terminal and adds a new line char
      *
@@ -15,7 +49,7 @@ class Bash extends IoAbstract
      */
     public function write($message, $type = 'info')
     {
-        echo $message."\n";
+        echo print_r( $message, 1)."\n";
     }
 
     /**
@@ -48,6 +82,51 @@ class Bash extends IoAbstract
         $command .= ' input && echo $input\'';
         
         return rtrim(shell_exec($command));
+    }
+
+
+    public function getTask()
+    {
+        if (isset($this->argv[1])) {
+            return $this->argv[1];
+        }
+
+        return false;
+    }
+
+    public function getOptions($task)
+    {
+        $options = $this->Task->options($task);
+        
+        if (count($options)) {
+            $this->Getopt->addOptions($options);
+
+            $this->Getopt->parse( $this->rawOptions() );
+        }
+
+        return $this->Getopt->getOptions();
+    }
+
+
+    public function help($task)
+    {
+        $options = $this->Task->options($task);
+            
+        $this->Getopt->addOptions($options);
+        ob_start();
+        $this->Getopt->showHelp();
+
+        return ob_get_clean();
+    }
+    
+    private function rawOptions()
+    {
+        $argv = $this->argv;
+
+        array_shift($argv);
+        array_shift($argv);
+
+        return $argv;
     }
 
     public function options($arguments)

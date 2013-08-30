@@ -22,20 +22,20 @@ class Jobs extends Component
 
     public function synopsis()
     {
-        $result = 'Pboy v.'.$this->Config['conf']['Pboy']['version']."\n";
-        $result .= "Tasks:\n";
+        $this->Io->write('Pboy v.'.$this->Config['conf']['Pboy']['version']);
+
+        $this->Io->write("Tasks:");
 
         foreach ($this->Config['tasks'] as $name => $params) {
             
-            $result .= "\t$name: ". $params['description']."\n";
+            $this->Io->write($name);
+            $this->Io->write($params['description']);
 
-            if (array_key_exists('arguments', $params)) {
-                $result .= "\tOptions:\n";
-                foreach ($params['arguments'] as $argument => $description) {
-                    $result .= "\t  $argument \t$description\n";
-                }
+            if (isset($params['arguments'])) {
+                $this->Io->write($this->Io->help($name));
             }
-            $result .="\t---\n";
+
+            $this->Io->write('-------');
         }
 
         return $result;

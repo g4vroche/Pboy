@@ -45,19 +45,40 @@ $Task   = $Loader->getService('Task');
     add our own options parser (or some free lib).
 */
 
-array_shift($argv);
+try {
 
-$task = array_pop($argv);
+    $task = $Io->getTask();
 
-if ($task) {
-    $status = $Task->execute($task);
+    $options = $Io->getOptions($task);
 
-    if ($status) {
-        $Io->write('Done');
+} catch (UnexpectedValueException $e) {
+    $Io->write($e->getMessage());
+    $Io->help($task);
+}
+
+try{
+
+    if ($task) {
+        $status = $Task->execute($task, $options);
+
+        if ($status === true) {
+            $Io->write('Done');
+        } else {
+            $Io->write($status);
+        }
+
+    } else {
+        $Io->write($Task->execute('synopsis'));    
     }
 
-} else {
-    $Io->write($Task->execute('synopsis'));
+} catch (Exception $e) {
+    
+    $Io->write($e->getMessage());
 
+    if (array_key_exists('verbose', $options)) {
+        $Io->write('Debug information:');
+        $Io->write($e->getMessage());
+    }
 }
+
 

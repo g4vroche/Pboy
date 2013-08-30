@@ -90,6 +90,10 @@ class Loader extends Component
             $dependencies[$dependency] = $this->$method($service, $dependency);
         }
 
+        if (count($dependencies) == 0) {
+            $dependencies = null;
+        }
+
         return $dependencies;
     }
 
@@ -104,7 +108,7 @@ class Loader extends Component
     {
         $provider = $this->Config['services'][$service]['Class'];
         
-        if (array_key_exists('dependencies', $this->Config['providers'][$provider])) {
+        if (isset($this->Config['providers'][$provider]['dependencies'])) {
             return $this->Config['providers'][$provider]['dependencies'];
         }
 
@@ -120,7 +124,7 @@ class Loader extends Component
      */
     private function loadGlobalDependency($service, $dependency)
     {
-        if (!array_key_exists($dependency, $this->tree['global'])) {
+        if (!isset($this->tree['global'][$dependency])) {
             $this->tree['global'][$dependency] =
                 $this->getService($dependency, false, true);
         }
@@ -137,7 +141,7 @@ class Loader extends Component
      */
     private function loadSharedDependency($service, $dependency)
     {
-       if (!array_key_exists($dependency, $this->tree['shared'][$service])) {
+       if (!isset($this->tree['shared'][$service][$dependency])) {
            $this->tree['shared'][$service][$dependency] =
             $this->getService($dependency, false, true);
        }
