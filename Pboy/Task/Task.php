@@ -46,7 +46,7 @@ class Task extends TaskAbstract
     {
         $options = array();
 
-        if (!$this->exists($task)) {
+        if ($this->exists($task)) {
 
             if ($arguments = $this->arguments($task)) {
 
