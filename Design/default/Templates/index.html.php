@@ -1,3 +1,4 @@
+<?php $layout = 'layout.html' ?>
 
 <div class="list posts">
 
@@ -6,11 +7,11 @@
     <div class="post">
         
         <div class="post-title">
-            <h2><?php echo $item['title'] ?></h2>
+            <h2><a href="<?php echo $item['slug'] ?>.html"><?php echo $item['title'] ?></a></h2>
         </div>
         
         <div class="post-content">
-            <p><?php echo $item['content'] ?></p>
+            <?php echo substr($item['content'], 0, 100).'...' ?>
         </div>
 
     </div>
