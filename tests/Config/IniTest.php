@@ -5,8 +5,6 @@ use Pboy\Config\Ini;
 class IniTest extends PHPUnit_Framework_TestCase
 {
 
-    const FIXTURE_FILE = 'tests/Config/fixture.ini';
-    
     public function testImplementsInterface()
     {
         $Config = new Ini;
@@ -22,33 +20,26 @@ class IniTest extends PHPUnit_Framework_TestCase
      */
     public function testFileIsLoaded($Config)
     {
-        $Config->load(self::FIXTURE_FILE);        
 
-        $this->assertInternalType('array', $Config->sectionOne);
+        $this->assertInternalType('array', $Config['conf']);
+
     }
 
     /**
      * @depends testImplementsInterface
      */
-    public function testGetData($Config)
+    public function testArrayAccessReturnsSection($Config)
     {
-        $this->assertEquals($Config->sectionOne['simpleStringValue'], 'foo');
-        
-        $this->assertEquals($Config->sectionOne['numericIndexedArray'], array('lorem', 'ipsum'));
-        
-        $this->assertEquals($Config->sectionOne['Hash'], array('lorem' => 'foo', 'ipsum' => 'bar'));
+        $this->assertArrayHasKey('Pboy', $Config['conf']);
     }
 
     /**
      * @depends testImplementsInterface
      */
-    public function testSetData($Config)
+    public function testArrayAccessReturnsVariable($Config)
     {
-        $Config->sectionOne['bar'] = 'foo';
-
-        $this->assertEquals($Config->sectionOne['bar'], 'foo');
+        $this->assertNotNull($Config['conf']['Pboy']['version']);
     }
-
 
 
 
