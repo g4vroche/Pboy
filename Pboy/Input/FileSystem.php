@@ -44,11 +44,36 @@ class FileSystem extends InputAbstract
     {
         $items = array();
 
-        foreach ($this->getItemsList($source, $pattern) as $itemPath) {           
+        foreach ($this->getItemsList($source, $pattern) as $itemPath) {     
             $items[$itemPath] = trim(file_get_contents("$source/$itemPath"));
+            $items[$itemPath] = $this->getMeta($items[$itemPath]);
         }
 
         return $items;
+    }
+
+    private function getMeta($item)
+    {
+        $data = array();
+        $lines = explode("\n", $item);
+
+        while (current($lines) != '') {
+            $data = array_merge($data, $this->extractMeta(current($lines), $data));
+
+            array_shift($lines);
+        }
+
+        $data['content'] = trim(implode("\n", $lines));
+
+        return $data;
+    }
+
+
+    private function extractMeta($line)
+    {
+        preg_match( '/\.\. ([^:]+):([^\n]*)/i', $line, $matches);
+
+        return array( $matches[1] => trim($matches[2]));
     }
 
 
