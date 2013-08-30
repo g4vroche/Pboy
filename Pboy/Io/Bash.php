@@ -64,7 +64,20 @@ class Bash extends IoAbstract
     {
         echo $message."\r";
     }
+    
 
+    /**
+     * Outputs under condition thaht verbose flag is on
+     *
+     * @param string $message
+     * @param array $options    Options passed to script
+     */
+    public function verbose($message, $options)
+    {
+        if (isset($options['verbose'])){
+            $this->write($message);
+        }
+    }
     
     /**
      * Reads input from CLI
@@ -100,7 +113,6 @@ class Bash extends IoAbstract
         
         if (count($options)) {
             $this->Getopt->addOptions($options);
-
             $this->Getopt->parse( $this->rawOptions() );
         }
 

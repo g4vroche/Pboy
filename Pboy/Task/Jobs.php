@@ -9,12 +9,16 @@ class Jobs extends Component
 
     public function generate($options)
     {
+        $this->Io->verbose('Retrieving posts...', $options);
         $items = $this->Input->getItems('posts');
 
+
+        $this->Io->verbose('Parsing posts...', $options);
         foreach ($items as $index => $item) {
             $items[$index] = $this->Parser->parse($item);
         }
 
+        $this->Io->verbose('Rendering posts...', $options);
         $this->Renderer->render($items);
 
         return true;
