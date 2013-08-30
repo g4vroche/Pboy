@@ -9,3 +9,5 @@ stories/*
 !stories/.gitkeep
 
 vendor/*
+
+test
