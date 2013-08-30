@@ -51,7 +51,7 @@ class Task extends TaskAbstract
             if ($arguments = $this->arguments($task)) {
 
                 foreach ($arguments as $flags => $description) {
-                    $options[] = $this->parseOption($flags, $description);
+                    $options[] = $this->parseConfiguredOption($flags, $description);
                 }
             }
         }
@@ -76,14 +76,24 @@ class Task extends TaskAbstract
         return false;
     }
 
-
+    /**
+     * @param string
+     */
     private function exists($task)
     {
         return isset($this->Config['tasks'][$task]);
     }
 
-
-    private function parseOption($flags, $description)
+    
+    /**
+     * Parses option definition from config
+     * and returns it as structured array
+     *
+     * @param string $flags         Key from configuration array
+     * @param string $description   Option description from config
+     * @return array
+     */
+    private function parseConfiguredOption($flags, $description)
     {
         $option     = explode('|', $flags);
         $option[2]  = (int)$option[2];
@@ -91,13 +101,6 @@ class Task extends TaskAbstract
 
         return $option;
     }
-    
-
-    private function optionType($option)
-    {
-        return (strlen($option) > 1) ? 'long' : 'short';
-    }
-
 }
 
 
