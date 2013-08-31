@@ -158,11 +158,7 @@ class Assets extends RendererAbstract
      */
     public static function replaceMultipleSpacesBySingle($content)
     {
-        while (preg_match( '/  /', $content)) {
-            $content = preg_replace( '/  /', ' ', $content);
-        }
-
-        return $content;
+        return preg_replace( '/\s+/', ' ', $content);
     }
 
     /**
