@@ -23,7 +23,7 @@ class Generate extends Component implements ControllerInterface
         }
         
         $views = $this->Config['conf']['Rendering']['views'];        
-        $path  = $this->Config['providers']['PhpTemplate']['output_path'];
+        $path  = $this->Config['tasks']['Generate']['output_path'];
 
         $this->Renderer->setOutputPath($path);
         $this->Renderer->setVariables($this->Config['conf']['Rendering']['template_vars']);
@@ -43,7 +43,7 @@ class Generate extends Component implements ControllerInterface
     private function getAssets($type)
     {
         $assets = $this->Config['conf']['Rendering']['assets_'.$type];
-        $outputPath  = $this->Config['providers']['PhpTemplate']['output_path'];
+        $outputPath  = $this->Config['tasks']['Generate']['output_path'];
 
         $compress = $this->Config['conf']['Rendering']['compress_assets'];
 
