@@ -1,5 +1,10 @@
-<?php $layout = 'layout.html' ?>
+<?php  
+/* ___ META DATA OVERRIDE ______________________________ */
 
+$TPL_parent = 'layout.html';
+
+/* _____________________________________________________ */
+?>
 <div class="list posts">
 
 <?php foreach ($data as $item): ?>
@@ -20,3 +25,4 @@
 <?php endforeach ?>
 
 </div>
+

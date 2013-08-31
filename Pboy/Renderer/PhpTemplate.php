@@ -21,9 +21,23 @@ class PhpTemplate extends RendererAbstract
         }
     }
 
-    public function setVariables($variables)
+    /**
+     * Append variables to an array whose elements
+     * will be available in templates
+     *
+     * @param mixed array|string $variable  An array to merge or a key
+     * @param mixed $value                  a value for key $variables
+     *
+     */
+    public function setVariables($variables, $value = null)
     {
-        $this->vars = array_merge($this->vars, $variables);
+        if (is_array($variables)) {
+            $this->vars = array_merge($this->vars, $variables);
+        } elseif ($value) {
+            $this->vars[$variables] = $value;
+        }
+
+        return $this;
     }
 
     /**
@@ -62,7 +76,7 @@ class PhpTemplate extends RendererAbstract
         foreach ($items as $item) {
             $outputFile = $this->outputPath.'/'.$item['slug'].'.'.$output_suffix;
 
-            file_put_contents($outputFile, $this->renderData($item, $template));
+            file_put_contents($outputFile, $this->renderTemplate($item, $template));
         }
     }
 
@@ -76,43 +90,50 @@ class PhpTemplate extends RendererAbstract
     {
         $outputFile = $this->outputPath.'/'.$template;
         
-        file_put_contents($outputFile, $this->renderData($items, $template));
+        file_put_contents($outputFile, $this->renderTemplate($items, $template));
     }
     
+
     /**
-     * Actually do the data rendering
+     * Renders template with passed data and global data
+     * If template returns a parent template, it is included
+     * and last template inclusion result is returned
+     * Usually parent template will display $content variable
+     * which contais result from child template processing
      *
-     * @param array $data   Data to use in template
-     * @param string $template  Template path
-     * @return string rendered data
+     * @param array $data       Data to be used in template
+     * @param string $template  Path to template
+     * @return string rendered template
      */
-    private function renderData($data, $template)
-    {
-
-        $file = $this->findInDesigns('Templates'.DIRECTORY_SEPARATOR.$template.self::SUFFIX);
-
-        $content = $this->renderTemplate($data, $file);
-
-        if (isset($this->vars['layout'])) {
-            
-            $this->setVariables(array('content' => $content));
-            $file = $this->findInDesigns('Templates'.DIRECTORY_SEPARATOR.$this->vars['layout'].self::SUFFIX);
-            $content = $this->renderTemplate($data, $file);
-        }
-
-        return $content; 
-    }
-
     private function renderTemplate($data, $template)
     {
+        $template = $this->findTemplate($template);
+
         extract($this->vars);
+
         ob_start();
         include $template;
+        $content = ob_get_clean();
 
-        if (isset($layout)) {
-            $this->setVariables(array('layout' => $layout));
+        if (isset($TPL_parent)) {
+            $this->setVariables('content', $content);
+
+            $content = $this->renderTemplate($data, $TPL_parent);
         }
-        return ob_get_clean();
+
+        return $content;
+    }
+
+
+    /**
+     * Helper to retrieve template path
+     *
+     * @param string $name  Template name
+     * @return string       Template path
+     */
+    private function findTemplate($name)
+    {
+        return $this->findInDesigns('Templates'.DIRECTORY_SEPARATOR.$name.self::SUFFIX);
     }
     
 }

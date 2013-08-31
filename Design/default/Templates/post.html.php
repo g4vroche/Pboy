@@ -1,7 +1,7 @@
 <?php  
 /* ___ META DATA OVERRIDE ______________________________ */
 
-$layout = 'layout.html';
+$TPL_parent = 'layout.html';
 $meta_title = $data['title'].' | '. $meta_title;
 
 /* _____________________________________________________ */
