@@ -65,7 +65,8 @@ class Post extends Component implements ControllerInterface
         $infos['slug'] = $this->uniqueSlug($infos['title'], $path);
         $file = $path.DIRECTORY_SEPARATOR.$infos['slug'].'.md';
 
-        if (!$infos['date']) {
+        if ($infos['date']) {
+            $infos['date'] = date('Y/m/d H:i', time());
         }
 
         $content = '';
