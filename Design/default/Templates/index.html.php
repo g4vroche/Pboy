@@ -13,6 +13,7 @@ $TPL_parent = 'layout.html';
         
         <div class="post-title">
             <h2><a href="<?php echo $item['slug'] ?>.html"><?php echo $item['title'] ?></a></h2>
+            <div class="date"><?php echo $item['date'] ?></div>
         </div>
         
         <div class="post-content">
