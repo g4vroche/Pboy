@@ -49,8 +49,23 @@ class FileSystem extends InputAbstract
             $items[$itemPath]['summary'] = '';
         }
 
+        uasort($items, array($this,'dateSort'));
+
         return $items;
     }
+
+    private function dateSort($a, $b)
+    {
+        $a = strtotime($a['date']);
+        $b = strtotime($b['date']);
+
+        if ($a == $b) {
+            return 0;
+        }
+
+        return ($a > $b)? -1 : 1;
+    }
+
 
     private function getMeta($item)
     {
