@@ -5,6 +5,8 @@ namespace Pboy\Renderer;
 class PhpTemplate extends RendererAbstract
 {
 
+    const SUFFIX = '.php';
+
     private $vars = array();
 
     /**
@@ -86,24 +88,31 @@ class PhpTemplate extends RendererAbstract
      */
     private function renderData($data, $template)
     {
-        $suffix = $this->Config['providers']['PhpTemplate']['template_suffix'];
-        extract($this->vars);
-        
-        $file = $this->findInDesigns('Templates'.DIRECTORY_SEPARATOR.$template.$suffix);
 
-        ob_start();
-        include $file;
-        $content = ob_get_clean();
+        $file = $this->findInDesigns('Templates'.DIRECTORY_SEPARATOR.$template.self::SUFFIX);
 
-        
-        if (isset($layout)) {
-            ob_start();
-            include $this->findInDesigns('Templates'.DIRECTORY_SEPARATOR.$layout.$suffix);
+        $content = $this->renderTemplate($data, $file);
 
-            $content = ob_get_clean();
+        if (isset($this->vars['layout'])) {
+            
+            $this->setVariables(array('content' => $content));
+            $file = $this->findInDesigns('Templates'.DIRECTORY_SEPARATOR.$this->vars['layout'].self::SUFFIX);
+            $content = $this->renderTemplate($data, $file);
         }
-        
+
         return $content; 
+    }
+
+    private function renderTemplate($data, $template)
+    {
+        extract($this->vars);
+        ob_start();
+        include $template;
+
+        if (isset($layout)) {
+            $this->setVariables(array('layout' => $layout));
+        }
+        return ob_get_clean();
     }
     
 }
