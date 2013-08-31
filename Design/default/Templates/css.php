@@ -1,3 +1,3 @@
-<?php foreach ($vars['css'] as $media => $stylesheet): ?>
-<link rel="stylesheet" type="text/css" href="<?php echo $stylesheet ?>" media="<?php echo $media ?>"/>
+<?php foreach ($css as $href => $media): ?>
+    <link rel="stylesheet" type="text/css" media="<?php echo $media ?>" href="<?php echo $href ?>"/>
 <?php endforeach ?>

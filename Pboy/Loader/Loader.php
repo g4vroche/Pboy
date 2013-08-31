@@ -16,7 +16,7 @@ class Loader extends Component
     {
         parent::__construct($dependencies);
 
-        $dependencies = $this->loadDependencies('Loader');
+        $dependencies = $this->loadDependencies('Loader', 'service');
 
         $this->assignDependencies($dependencies);
     }
@@ -39,7 +39,7 @@ class Loader extends Component
 
         $class = $this->getServiceProvider($service);
 
-        $dependencies = $this->loadDependencies($service);
+        $dependencies = $this->loadDependencies($service, 'service');
 
         $Service = new $class($dependencies);
         
@@ -49,8 +49,36 @@ class Loader extends Component
 
         return $Service;
     }
-
+    
     /**
+     * Gets an initialized controller with its dependencies
+     *
+     * @param string $controller    Name of the controller
+     *      Must match a class implementing ControlleInterface
+     * @return object
+     */
+    public function getController($controller)
+    {
+        $namespace = 'Pboy\Controller';
+
+        $fullControllerName = "$namespace\\$controller";
+
+        if (!class_exists($fullControllerName)) {
+            throw new \DomainException("Unknow class <$fullControllerName>");
+        }
+
+        if (!in_array("$namespace\ControllerInterface", class_implements($fullControllerName))) {
+            throw new \DomainException("Class <$fullControllerName> is not a valid controller");
+        }
+
+        $dependencies = $this->loadDependencies($controller, 'controller');
+
+        return new $fullControllerName($dependencies);
+    }
+
+
+
+/**
      * Gets the class to instantiate
      *
      * @param string $service   Name of the service to instantiate
@@ -59,7 +87,7 @@ class Loader extends Component
      */
     private function getServiceProvider($service)
     {
-        $class = "\\Pboy\\$service\\";
+        $class = "\Pboy\\$service\\";
 
         $configured = $this->Config['services'][$service]['Class'];
 
@@ -80,14 +108,16 @@ class Loader extends Component
      * @param string $service Name of the service being loaded
      * @return array
      */
-    private function loadDependencies($service)
+    private function loadDependencies($for, $type)
     {
         $dependencies = array();
 
-        foreach ($this->getDependencies($service) as $dependency => $type) {
+        $getDependencies = 'get'.ucfirst($type).'Dependencies';
+
+        foreach ($this->$getDependencies($for) as $dependency => $type) {
             $method = 'load'.ucfirst($type).'Dependency';
 
-            $dependencies[$dependency] = $this->$method($service, $dependency);
+            $dependencies[$dependency] = $this->$method($for, $dependency);
         }
 
         if (count($dependencies) == 0) {
@@ -104,12 +134,28 @@ class Loader extends Component
      * @param string $service   Service name
      * @return array            Dependencies list
      */
-    private function getDependencies($service)
+    private function getServiceDependencies($service)
     {
         $provider = $this->Config['services'][$service]['Class'];
         
         if (isset($this->Config['providers'][$provider]['dependencies'])) {
             return $this->Config['providers'][$provider]['dependencies'];
+        }
+
+        return array();
+    }
+
+
+    /**
+     * Get dependencies list for a controller
+     *
+     * @param string $service   controlle name
+     * @return array            Dependencies list
+     */
+    private function getControllerDependencies($controller)
+    {
+        if (isset($this->Config['tasks'][$controller]['dependencies'])) {
+            return $this->Config['tasks'][$controller]['dependencies'];
         }
 
         return array();

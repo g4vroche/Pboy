@@ -12,13 +12,15 @@ class Task extends TaskAbstract
      */
     public function execute($task, $options = array())
     {
+        $task = ucfirst($task);
+
         if (!$params = $this->get($task)) {
             throw new \InvalidArgumentException("Unknow task: $task");
         }
         
-        $Service = $this->Loader->getService($params['service']);
-
-        return call_user_func(array($Service, $params['method']), $options);
+        $Controller = $this->Loader->getController($task);
+        
+        return $Controller->run();
     }
 
     /**

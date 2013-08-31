@@ -15,12 +15,8 @@ class FileSystem extends InputAbstract
      * @param string $source Path to files
      * @return array file names
      */
-    public function getItemsList($source, $pattern = null)
+    public function getItemsList($source, $pattern)
     {
-        if (!$pattern) {
-            $pattern = $this->Config['providers']['FileSystem']['file_type_pattern'];
-        }
-
         $fileNames = scandir( $source );
 
         foreach ($fileNames as $index => $fileName) {
@@ -40,13 +36,17 @@ class FileSystem extends InputAbstract
      * @param string $source Path to files
      * @return array file contents
      */
-    public function getItems($source, $pattern = null)
+    public function getItems($source, $pattern)
     {
         $items = array();
 
-        foreach ($this->getItemsList($source, $pattern) as $itemPath) {     
-            $items[$itemPath] = trim(file_get_contents("$source/$itemPath"));
+        foreach ($this->getItemsList($source, $pattern) as $itemPath) {
+
+            $path = "$source/$itemPath";
+            $items[$itemPath] = trim(file_get_contents($path));
             $items[$itemPath] = $this->getMeta($items[$itemPath]);
+            $items[$itemPath]['updated'] = filemtime($path);
+            $items[$itemPath]['summary'] = '';
         }
 
         return $items;

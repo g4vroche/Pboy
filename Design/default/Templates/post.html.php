@@ -2,7 +2,7 @@
 /* ___ META DATA OVERRIDE ______________________________ */
 
 $layout = 'layout.html';
-$vars['meta_title'] = $data['title'].' | '. $vars['meta_title'];
+$meta_title = $data['title'].' | '. $meta_title;
 
 /* _____________________________________________________ */
 ?>

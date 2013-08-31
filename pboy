@@ -68,7 +68,7 @@ try{
         }
 
     } else {
-        $Io->write($Task->execute('synopsis'));    
+        $Io->write($Task->execute('help'));    
     }
 
 } catch (Exception $e) {
