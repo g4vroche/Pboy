@@ -49,7 +49,7 @@ class Bash extends IoAbstract
      */
     public function write($message, $type = 'info')
     {
-        echo print_r( $message, 1)."\n";
+        echo print_r( $message, 1).PHP_EOL;
     }
 
     /**
@@ -91,7 +91,7 @@ class Bash extends IoAbstract
         $option = ($showInput) ? '' : ' -s';
 
         $command = $this->Config['providers']['Bash']['exec_path'].' -c ';
-        $command .= '\'read '.$option.' -p "'. addslashes($question).' "';
+        $command .= '\'read '.$option.' -p "'. addslashes($question).': "';
         $command .= ' input && echo $input\'';
         
         return rtrim(shell_exec($command));
