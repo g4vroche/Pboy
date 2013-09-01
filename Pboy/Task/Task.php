@@ -31,9 +31,10 @@ class Task extends TaskAbstract
      */
     private function get($task)
     {
-        if (isset($this->Config['tasks'][$task])) {
+        if ($this->exists($task)) {
             return $this->Config['tasks'][$task];
         }
+
         return false;
     }
 
@@ -48,13 +49,14 @@ class Task extends TaskAbstract
     {
         $options = array();
 
-        if ($this->exists($task)) {
+        if (!$this->exists($task)) {
+            throw new \InvalidArgumentException("Unknow task: $task");
+        }
 
-            if ($arguments = $this->arguments($task)) {
+        if ($arguments = $this->arguments($task)) {
 
-                foreach ($arguments as $flags => $description) {
-                    $options[] = $this->parseConfiguredOption($flags, $description);
-                }
+            foreach ($arguments as $flags => $description) {
+                $options[] = $this->parseConfiguredOption($flags, $description);
             }
         }
 
