@@ -78,7 +78,7 @@ class Loader extends Component
 
 
 
-/**
+    /**
      * Gets the class to instantiate
      *
      * @param string $service   Name of the service to instantiate
