@@ -147,10 +147,6 @@ class Bash extends IoAbstract
         return $argv;
     }
 
-    public function options($arguments)
-    {
-        $taskName = $arguments[1];
 
-    }
 
 }
