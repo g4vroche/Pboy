@@ -9,27 +9,24 @@ class Help extends Component implements ControllerInterface
 
     public function run($options = array())
     {
-        $this->Io->write('Pboy v.'.$this->Config['conf']['Pboy']['version']);
+        $result = $this->Io->format('Pboy v.'.$this->Config['conf']['Pboy']['version']);
 
 
-        $this->Io->write("Tasks:");
-        $this->Io->write("------");
-        
-
-        $indent = " ";
+        $result .= $this->Io->format("Tasks:");
+        $result .= $this->Io->format("------");
 
         foreach ($this->Config['tasks'] as $name => $params) {
             
-            $this->Io->write('# '.$name);
-            $this->Io->write($params['description']);
+            $result .= $this->Io->format('# '.$name);
+            $result .= $this->Io->format($params['description']);
 
             if (isset($params['arguments'])) {
-                $this->Io->write($this->Io->help($name));
+                $result .= $this->Io->format($this->Io->help($name));
             }
             
-            $this->Io->write('');
+            $result .= $this->Io->format('');
         }
 
-        return false;
+        return $result;
     }
 }
