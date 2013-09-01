@@ -47,6 +47,7 @@ class Task extends TaskAbstract
      */
     public function options($task)
     {
+        $task = ucfirst($task);
         $options = array();
 
         if (!$this->exists($task)) {
@@ -100,6 +101,7 @@ class Task extends TaskAbstract
     private function parseConfiguredOption($flags, $description)
     {
         $option     = explode('|', $flags);
+        array_walk($option, function(&$item) { $item = ($item) ?: null; });
         $option[2]  = (int)$option[2];
         $option[]   = $description;
 
