@@ -24,7 +24,6 @@ class Help extends Component implements ControllerInterface
                 $result .= $this->Io->format($this->Io->help($name));
             }
             
-            $result .= $this->Io->format('');
         }
 
         return $result;
