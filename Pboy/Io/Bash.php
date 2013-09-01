@@ -128,13 +128,13 @@ class Bash extends IoAbstract
 
     public function help($task)
     {
-        $options = $this->Task->options($task);
-            
-        $this->Getopt->addOptions($options);
-        ob_start();
-        $this->Getopt->showHelp();
+        $this->Getopt->resetOptionList();
 
-        return ob_get_clean();
+        $options = $this->Task->options($task);
+ 
+        $this->Getopt->addOptions($options);
+        
+        return $this->Getopt->getHelpText();
     }
     
     private function rawOptions()
