@@ -1,6 +1,6 @@
 <?php
 /**
- * Handles I/O for bash CLI
+ * Handles I/O for at least bash CLI
  */
 namespace Pboy\Io;
 
@@ -24,6 +24,7 @@ class Bash extends IoAbstract
 
     /**
      * Internal copy of argv
+     *
      * @var string
      */
      public $argv;
@@ -41,7 +42,7 @@ class Bash extends IoAbstract
     }
 
     /**
-     * Outputs content to the terminal and adds a new line char
+     * Outputs formated content to the terminal 
      *
      * @param string $message
      * @param string $type      Message type. Unused for now
@@ -52,11 +53,19 @@ class Bash extends IoAbstract
         echo $this->format($message, $type);
     }
 
-
+    
+    /**
+     * Formats content for terminal and adds a new line char
+     *
+     * @param string $message
+     * @param string $type      Message type. Unused for now
+     *                          could be useful for styling.
+     */
     public function format($message, $type = 'info')
     {
         return print_r($message, 1).PHP_EOL;
     }
+
 
     /**
      * Outputs content to the terminal 
@@ -70,7 +79,7 @@ class Bash extends IoAbstract
     {
         echo $message."\r";
     }
-    
+
 
     /**
      * Outputs under condition thaht verbose flag is on
@@ -84,7 +93,8 @@ class Bash extends IoAbstract
             $this->write($message);
         }
     }
-    
+
+
     /**
      * Reads input from CLI
      *
@@ -104,6 +114,11 @@ class Bash extends IoAbstract
     }
 
 
+    /**
+     * Extracts task name from command line
+     *
+     * @return mixed string|bool    Task name, false if task given
+     */
     public function getTask()
     {
         if (isset($this->argv[1])) {
@@ -113,6 +128,13 @@ class Bash extends IoAbstract
         return false;
     }
 
+
+    /**
+     * Gets avtive options for current task
+     * 
+     * @param string $task  Task name
+     * @return array        Options list
+     */
     public function getOptions($task)
     {
         $options = $this->Task->options($task);
@@ -126,6 +148,12 @@ class Bash extends IoAbstract
     }
 
 
+    /**
+     * Returns help for given task
+     *
+     * @param string $task  Task name
+     * @return string       Help content (from tasks.ini)
+     */
     public function help($task)
     {
         $this->Getopt->resetOptionList();
@@ -137,6 +165,13 @@ class Bash extends IoAbstract
         return $this->Getopt->getHelpText();
     }
     
+
+    /**
+     * Retrun command line without
+     * script name and task
+     *
+     * @return string
+     */
     private function rawOptions()
     {
         $argv = $this->argv;
@@ -146,7 +181,5 @@ class Bash extends IoAbstract
 
         return $argv;
     }
-
-
 
 }
