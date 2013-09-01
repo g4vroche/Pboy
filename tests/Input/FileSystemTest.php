@@ -20,11 +20,14 @@ class testFileSystem extends PHPUnit_Framework_TestCase
     {
         $Fs = new FileSystem;
 
-        $this->assertEquals(
-            array( 'fixture_1.rst' => 'content of fixture 1',
-                   'fixture_2.md'  => 'content of fixture 2'),
-            $Fs->getItems(__DIR__, '/\.(rst|txt|md)/')
-        );
+        $keys = array('title', 'date', 'content', 'updated', 'summary');
+
+        $items = $Fs->getItems(__DIR__, '/\.(rst|txt|md)/');
+
+        foreach ($items as $item) {
+            $this->assertEquals(array_keys($item), $keys);
+        }
+
     }
 
 
