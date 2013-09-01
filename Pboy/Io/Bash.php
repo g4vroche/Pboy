@@ -49,7 +49,13 @@ class Bash extends IoAbstract
      */
     public function write($message, $type = 'info')
     {
-        echo print_r( $message, 1).PHP_EOL;
+        echo $this->format($message, $type);
+    }
+
+
+    public function format($message, $type = 'info')
+    {
+        return print_r($message, 1).PHP_EOL;
     }
 
     /**
