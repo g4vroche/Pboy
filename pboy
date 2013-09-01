@@ -48,30 +48,39 @@ $Task   = $Loader->getService('Task');
 try {
 
     $task = $Io->getTask();
-
-    $options = $Io->getOptions($task);
-
-} catch (UnexpectedValueException $e) {
-    $Io->write($e->getMessage());
-    $Io->help($task);
-}
-
-try{
-
-    if ($task) {
-        $status = $Task->execute($task, $options);
-
-        if ($status === true) {
-            $Io->write('Done');
-        } else {
-            $Io->write($status);
-        }
-
-    } else {
-        $Io->write($Task->execute('help'));    
+    
+    if (!$task) {
+        throw new \BadMethodCallException();
     }
 
-} catch (Exception $e) {
+    $options = $Io->getOptions($task);
+    $status = $Task->execute($task, $options);
+
+    if ($status === true) {
+        $Io->write('Done');
+    } else {
+        $Io->write($status);
+    }
+
+// Error with options
+} catch (\UnexpectedValueException $e) {
+
+    $Io->write($e->getMessage());
+    $Io->write($Io->help($task));
+
+// Error with task name 
+} catch (\InvalidArgumentException $e) {
+
+    $Io->write($e->getMessage());
+    $Io->write($e->getTrace());
+
+// No task
+} catch (\BadMethodCallException $e) {
+
+    $Io->write($Task->execute('help'));
+
+// Others
+} catch (\Exception $e) {
     
     $Io->write($e->getMessage());
 
@@ -80,5 +89,4 @@ try{
         $Io->write($e->getMessage());
     }
 }
-
 
