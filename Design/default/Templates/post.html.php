@@ -18,3 +18,5 @@ $meta_title = $data['title'].' | '. $meta_title;
     </div>
 
 </div>
+
+<a href="index.html">Retour</a>
