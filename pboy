@@ -38,11 +38,6 @@ $Task   = $Loader->getService('Task');
 
 
 /*  ____ Execution ________________________________________
-
-    For now command has to be after arguments due to getopt()
-    using some global variable that we can't rewrite.
-    This only fact makes it untestable and suggest we should
-    add our own options parser (or some free lib).
 */
 
 try {
@@ -72,7 +67,6 @@ try {
 } catch (\InvalidArgumentException $e) {
 
     $Io->write($e->getMessage());
-    $Io->write($e->getTrace());
 
 // No task
 } catch (\BadMethodCallException $e) {
@@ -84,7 +78,7 @@ try {
     
     $Io->write($e->getMessage());
 
-    if (array_key_exists('verbose', $options)) {
+    if (isset($options['verbose'])) {
         $Io->write('Debug information:');
         $Io->write($e->getMessage());
     }
