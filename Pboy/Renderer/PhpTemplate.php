@@ -61,6 +61,8 @@ class PhpTemplate extends RendererAbstract
     public function setOutputPath($path)
     {
         $this->outputPath = $path;
+
+        return $this;
     }
 
     /**
