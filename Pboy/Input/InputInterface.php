@@ -4,8 +4,10 @@ namespace Pboy\Input;
 
 interface InputInterface
 {
-    public function getItemsList($source, $pattern);
 
-    public function getItems($source, $pattern);
+    public function getItemsList($source, $filters, $sort = null, $limit = null);
+
+    public function getItems($source, $filters, $sort = null, $limit = null);
+
 }
 

@@ -12,7 +12,7 @@ class testFileSystem extends PHPUnit_Framework_TestCase
 
         $this->assertEquals( 
             array( 'fixture_1.rst', 'fixture_2.md'), 
-            $Fs->getItemsList(__DIR__, '/\.(rst|txt|md)/')
+            $Fs->getItemsList(__DIR__, array('rst', 'txt','md'))
         );
     }
 
@@ -20,9 +20,9 @@ class testFileSystem extends PHPUnit_Framework_TestCase
     {
         $Fs = new FileSystem;
 
-        $keys = array('title', 'date', 'content', 'updated', 'summary');
+        $keys = array('title', 'date', 'content', 'format', 'updated', 'summary');
 
-        $items = $Fs->getItems(__DIR__, '/\.(rst|txt|md)/');
+        $items = $Fs->getItems(__DIR__, array('rst', 'txt','md'));
 
         foreach ($items as $item) {
             $this->assertEquals(array_keys($item), $keys);
