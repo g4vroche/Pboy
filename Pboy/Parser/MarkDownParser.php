@@ -13,4 +13,9 @@ class MarkDownParser extends ParserAbstract implements ParserInterface
         
         return $data;
     }
+
+    public function supportedFormats()
+    {
+        return array('md', 'markdown');
+    }
 }
