@@ -86,7 +86,7 @@ class FileSystem extends InputAbstract
             throw new \BadMethodCallException("Unknow method $name");
         }
 
-        $parts = explode(" ", preg_replace('/([A-Z])/', ' $1', $name));
+        $parts = $this->parseCamelCase($name);
 
         if (count($parts) == 3) {
             $parts[] = 'asc';

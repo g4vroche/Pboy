@@ -23,11 +23,30 @@ abstract class Component
         }
     }
 
+
+    /**
+     * @param array $dependencies
+     */
     protected function assignDependencies($dependencies)
     {
         foreach ($dependencies as $dependency => $Object) {
             $this->$dependency = $Object;
         }
+    }
+    
+    /**
+     * Splits a camel case string into an array
+     *
+     * @param string $string
+     * @return array
+     */
+    protected function parseCamelCase($string)
+    {
+        return explode(" ", 
+            trim(
+                preg_replace('/([A-Z])/', ' $1', $string)
+            )
+        );
     }
 }
 
