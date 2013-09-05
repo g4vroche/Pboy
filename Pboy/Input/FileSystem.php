@@ -86,7 +86,7 @@ class FileSystem extends InputAbstract
             throw new \BadMethodCallException("Unknow method $name");
         }
 
-        $parts = $this->parseCamelCase($name);
+        $parts = $this->camelCaseToArray($name);
 
         if (count($parts) == 3) {
             $parts[] = 'asc';

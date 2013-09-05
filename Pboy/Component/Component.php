@@ -40,7 +40,7 @@ abstract class Component
      * @param string $string
      * @return array
      */
-    protected function parseCamelCase($string)
+    protected function camelCaseToArray($string)
     {
         return explode(" ", 
             trim(
