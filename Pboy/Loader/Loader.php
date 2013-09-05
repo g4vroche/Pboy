@@ -31,7 +31,7 @@ class Loader extends Component
      *
      * @return Object The object, with its dependecies loaded if $Config was provided
      */
-    public function getService($service, $global = false, $isDependency = false)
+    public function getService($service, $scope = 'global', $isDependency = false)
     {
         if (!$isDependency) {
             $this->tree['shared'][$service] = array();
@@ -43,7 +43,7 @@ class Loader extends Component
 
         $Service = new $class($dependencies);
         
-        if ($global) {
+        if ($scope == 'global') {
             $this->tree['global'][$service] = $Service;
         }
 
@@ -189,7 +189,7 @@ class Loader extends Component
     {
        if (!isset($this->tree['shared'][$service][$dependency])) {
            $this->tree['shared'][$service][$dependency] =
-            $this->getService($dependency, false, true);
+            $this->getService($dependency, 'shared', true);
        }
 
        return $this->tree['shared'][$service][$dependency];
@@ -204,7 +204,7 @@ class Loader extends Component
      */
     private function loadSingleDependency($service, $dependency)
     {
-        return $this->getService($dependency, false, true);
+        return $this->getService($dependency, 'single', true);
     }
 
 
