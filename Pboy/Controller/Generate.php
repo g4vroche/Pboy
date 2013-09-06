@@ -7,14 +7,19 @@ use Pboy\Component\Component;
 class Generate extends Component implements ControllerInterface
 {
 
+    public $foo;
     
     public function run($options = array())
     {
+        $this->hook('before_generate');
+
         foreach ($this->Config['views'] as $view => $params) {
             if ($view != 'default') {
                 $this->process($this->getConfig($view));
             }
         }
+
+        $this->hook('after_generate');
 
         return true;
     }
@@ -36,22 +41,39 @@ class Generate extends Component implements ControllerInterface
 
     public function process($cfg)
     {
-        $formats = $this->Parser->supportedFormats();
+        $this->hook('before_generate_process');
 
-        $items = array();
-        foreach ($cfg['repositories'] as $repository) {
-            $items = array_merge($items, $this->fetchData($repository, $formats));
-        }
+        $items = $this->fetchFromRepositories($cfg);
 
-        $assets = array(
-            'css' => $this->getAssets('css', $cfg),
-            'js'  => $this->getAssets('js', $cfg)
-            );
+        $variables = array('cfg' => $cfg);
+        
+        $this->hook('before_render_view', $variables);
 
         $this->Renderer->setOutputPath($cfg['output_path'])
                        ->setVariables($cfg['template_vars'])
-                       ->setVariables($assets)
+                       ->setVariables($variables)
                        ->renderView($cfg['template'], $cfg['type'], $items);
+
+        $this->hook('after_generate_process', $this);
+    }
+
+    /**
+     * Fetchs data from configured reposities
+     *
+     * @param array $cfg    Configuration for a view
+     * @return array
+     */
+    private function fetchFromRepositories($cfg)
+    {
+        $items = array();
+
+        $formats = $this->Parser->supportedFormats();
+
+        foreach ($cfg['repositories'] as $repository) {
+            $items = array_merge($items, $this->fetchFromRepository($repository, $formats));
+        }
+
+        return $items;
     }
 
 
@@ -62,33 +84,16 @@ class Generate extends Component implements ControllerInterface
      *      (avoid loading documents that won't be parsable)
      * @return array
      */
-    private function fetchData($repository, $formats)
+    private function fetchFromRepository($repository, $formats)
     {
+        $this->hook('before_fetch_from_repository');
+
         $items = $this->Input->getItems($repository, $formats);
 
-        foreach ($items as $index => $item) {
-            $items[$index] = $this->Parser->parse($item);
-        }
+        $this->hook('after_fetch_from_repository', $items);
 
         return $items;
     }
 
-
-    /**
-     * Generate assets if needed and return their paths
-     *
-     * @param string $type
-     * @param array $cfg
-     * @return array
-     */
-    private function getAssets($type, $cfg)
-    {
-        return  $this->Assets->generate(
-                    $cfg["assets_$type"], 
-                    ucfirst($type), 
-                    $cfg['output_path'], 
-                    $cfg['compress_assets']
-                );
-    }
 
 }

@@ -13,6 +13,13 @@ class Assets extends RendererAbstract
     {
     }
 
+    public function beforeRenderViewHook($eventName, &$variables, &$object)
+    {
+        $cfg = $variables['cfg'];
+        $variables['css'] = $this->generate($cfg["assets_css"], 'Css', $cfg['output_path'], $cfg['compress_assets']);
+        $variables['js']  = $this->generate($cfg["assets_js"],  'Js',  $cfg['output_path'], $cfg['compress_assets']);
+    }
+
     public function generate($assets, $type, $output, $compress = false)
     {        
         if ($compress) {

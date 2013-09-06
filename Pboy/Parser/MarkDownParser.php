@@ -18,4 +18,12 @@ class MarkDownParser extends ParserAbstract implements ParserInterface
     {
         return array('md', 'markdown');
     }
+
+    public function parseItems($eventName, &$items, &$caller)
+    {
+        foreach ($items as $index => $item) {
+            $items[$index] = $this->parse($item);
+        }
+
+    }
 }

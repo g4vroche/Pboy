@@ -12,16 +12,25 @@ class Task extends TaskAbstract
      */
     public function execute($task, $options = array())
     {
+        $this->hook('before_task_init', $options);
+
         $task = ucfirst($task);
 
-        if (!$params = $this->get($task)) {
+        if (!$this->get($task)) {
             throw new \InvalidArgumentException("Unknow task: $task");
         }
         
         $Controller = $this->Loader->getController($task);
-        
-        return $Controller->run();
+
+        $this->hook('after_task_init', $options);
+
+        $result = $Controller->run($options);
+
+        $this->hook('after_task_run', $result);
+
+        return $result;
     }
+
 
     /**
      * Get task description from config
@@ -83,6 +92,7 @@ class Task extends TaskAbstract
 
     /**
      * @param string
+     * @return bool
      */
     private function exists($task)
     {

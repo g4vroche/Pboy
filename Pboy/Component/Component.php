@@ -40,13 +40,40 @@ abstract class Component
      * @param string $string
      * @return array
      */
-    protected function camelCaseToArray($string)
+    final public function camelCaseToArray($string)
     {
         return explode(" ", 
             trim(
                 preg_replace('/([A-Z])/', ' $1', $string)
             )
         );
+    }
+    
+    /**
+     * Transforms an underscore separated string into
+     * a "camelCased" one
+     *
+     * @param string $string
+     * @return string
+     */
+    final public function underscoreToCamelCase($string)
+    {
+        $callback = function($matches) { return strtoupper($matches[1]); };
+
+        return preg_replace_callback('/_([a-z])/', $callback, $string);
+
+    }
+
+    /**
+     * Shortcut to give a hook
+     *
+     * @param string $eventName
+     * @param mixed $data
+     * @return mixed
+     */
+    final public function hook($eventName, &$data = array())
+    {
+        return $this->Hook->notify($eventName, $data, $this);
     }
 }
 
