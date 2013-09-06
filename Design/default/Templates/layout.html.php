@@ -8,6 +8,10 @@
     <?php include 'css.php' ?>
 </head>
 <body>
+
+    <div class="stories">
+        <?php include 'output/stories.html' ?>
+    </div>
     <?php echo $content ?>
     <?php include 'js.php' ?>
 </body>
