@@ -52,7 +52,7 @@ class Generate extends Component implements ControllerInterface
         $this->Renderer->setOutputPath($cfg['output_path'])
                        ->setVariables($cfg['template_vars'])
                        ->setVariables($variables)
-                       ->renderView($cfg['template'], $cfg['type'], $items);
+                       ->renderView($cfg['template'], $cfg['type'], $cfg['output'], $items);
 
         $this->hook('after_generate_process', $this);
     }

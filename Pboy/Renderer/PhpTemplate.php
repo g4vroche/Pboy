@@ -46,15 +46,16 @@ class PhpTemplate extends RendererAbstract
      * @param string $view View name
      * @param array $items
      */
-    public function renderView($view, $type, $items)
+    public function renderView($view, $type, $output, $items)
     {
         $method = 'render'.ucfirst($type);
 
         if (!is_callable(array($this,$method))){
             throw new UnexpectedValueException("Unknow render type: <$type>");
         }
+
         
-        $this->$method($items, $view);
+        $this->$method($items, $view, $output);
 
     }
 
@@ -66,17 +67,28 @@ class PhpTemplate extends RendererAbstract
     }
 
     /**
+     * TODO Rename this
+     */
+    private function getOutputFile($output, $item)
+    {
+        return preg_replace_callback(
+                '/<([^>]+)>/', 
+                function ($matches) use ($item) { return $item[$matches[1]]; },
+                $output
+        );
+    }
+
+    /**
      * Render in a file per item
      *
      * @param array $items
      * @param string $template  Template path
      */
-    public function renderItem($items, $template)
+    public function renderItem($items, $template, $output)
     {
-        $output_suffix = end(explode('.', $template));
-
         foreach ($items as $item) {
-            $outputFile = $this->outputPath.'/'.$item['slug'].'.'.$output_suffix;
+
+            $outputFile = $this->outputPath.'/'.$this->getOutputFile($output, $item);
 
             file_put_contents($outputFile, $this->renderTemplate($item, $template));
         }
@@ -88,9 +100,9 @@ class PhpTemplate extends RendererAbstract
      * @param array $items
      * @param string $template  Template path
      */
-    public function renderList($items, $template)
+    public function renderList($items, $template, $output)
     {
-        $outputFile = $this->outputPath.'/'.$template;
+        $outputFile = $this->outputPath.'/'.$output;
         
         file_put_contents($outputFile, $this->renderTemplate($items, $template));
     }
