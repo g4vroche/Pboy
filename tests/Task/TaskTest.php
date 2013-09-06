@@ -29,9 +29,24 @@ class testTask extends PHPUnit_Framework_TestCase
                 'providers' => array(
                     'Loader' => array( 'dependencies' => array( 'Config' => 'global') )
                 ),
+                'hooks' => array(
+                    'before_task_init' => array(),
+                    'after_task_init' => array(),
+                    'after_task_run' => array()
+                ),
             );
 
-        return array(array(new Pboy\Task\Task(array('Config' => $Config))));
+        $Hook = $this->getMock('\Pboy\Hook\Hook', array('trigger'));
+        $Hook->expects($this->any())
+            ->method('trigger')
+            ->will($this->returnValue(true));
+
+        $Hook->Config = $Config;
+
+        return array(array(new Pboy\Task\Task(array(
+            'Config' => $Config,
+            'Hook' => $Hook
+        ))));
     }
 
 
