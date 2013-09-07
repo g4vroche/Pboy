@@ -70,7 +70,7 @@ class Generate extends Component implements ControllerInterface
         $formats = $this->Parser->supportedFormats();
 
         foreach ($cfg['repositories'] as $repository) {
-            $items = array_merge($items, $this->fetchFromRepository($repository, $formats));
+            $items = array_merge($items, $this->fetchFromRepository($repository, $formats, $cfg['sort'], $cfg['limit']));
         }
 
         return $items;
@@ -84,11 +84,11 @@ class Generate extends Component implements ControllerInterface
      *      (avoid loading documents that won't be parsable)
      * @return array
      */
-    private function fetchFromRepository($repository, $formats)
+    private function fetchFromRepository($repository, $formats, $sort, $limit)
     {
         $this->hook('before_fetch_from_repository');
 
-        $items = $this->Input->getItems($repository, $formats);
+        $items = $this->Input->getItems($repository, $formats, $sort, $limit);
 
         $this->hook('after_fetch_from_repository', $items);
 

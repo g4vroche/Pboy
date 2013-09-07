@@ -54,7 +54,7 @@ class FileSystem extends InputAbstract
             $items[$itemPath]['summary'] = '';
         }
 
-        uasort($items, array($this,'sortByTitleAsc'));
+        uasort($items, array($this,"sortBy$sort"));
 
         return $items;
     }
