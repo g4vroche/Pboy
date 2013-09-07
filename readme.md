@@ -4,7 +4,21 @@ PBoy
 
 An attempt to create a basic static blog generator in PHP.
 
-Wrok in progress, not functional yet.
+Wrok in progress, already functional.
+
+
+Quick start :
+-------------
+
+Create a new post
+
+    $ php pboy post
+
+Generate blog
+    
+    $php pboy generate
+
+
 
 
 Features aimed :
