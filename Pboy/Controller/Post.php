@@ -62,28 +62,18 @@ class Post extends Component implements ControllerInterface
 
     private function create($infos, $text, $path)
     {
-        print_r($infos);
-
-        $infos['slug'] = $this->uniqueSlug($infos['title'], $path);
-        $file = $path.DIRECTORY_SEPARATOR.$infos['slug'].'.md';
-
         if (!$infos['date']) {
             $infos['date'] = date('Y/m/d H:i', time());
         }
 
-        $content = '';
-        foreach($infos as $key => $value) {
-            $content .= ".. $key: $value".PHP_EOL;
-        }
+        $infos['slug'] = $this->uniqueSlug($infos['title'], $path);
+        $infos['content'] = PHP_EOL.$text.PHP_EOL;
+        
+        $ref = $this->Input->saveItem($infos, $path);
 
-        $content .= PHP_EOL.$text.PHP_EOL;
-
-
-        file_put_contents($file, $content);
-
-        return $file;
-
+        return $ref;
     }
+
 
     private function uniqueSlug($name, $path, $i = 0)
     {

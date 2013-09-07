@@ -53,11 +53,41 @@ class FileSystem extends InputAbstract
             $items[$itemPath]['updated'] = filemtime($path);
             $items[$itemPath]['summary'] = '';
         }
-
-        uasort($items, array($this,"sortBy$sort"));
+    
+        if ($sort) {
+            uasort($items, array($this,"sortBy$sort"));
+        }
 
         return $items;
     }
+
+
+    public function saveItem($item, $source)
+    {
+        $content = $this->formatData($item);
+        
+        $file = $source.DIRECTORY_SEPARATOR.$item['slug'].'.md';
+
+        file_put_contents($file, $content);
+    
+        return $file;
+    }
+
+
+    private function formatData($item)
+    {
+        $content = '';
+        
+        foreach($item as $key => $value) {
+            if ($key != 'content') {
+                $content .= ".. $key: $value".PHP_EOL;
+            }
+        }
+        $content .= $item['content'];
+
+        return $content;
+    }
+
 
     /**
      * Checks if format is supported by system
