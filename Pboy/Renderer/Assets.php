@@ -33,6 +33,64 @@ class Assets extends RendererAbstract
         return $files;
     }
 
+
+    public function deployImg()
+    {
+        $output = 'output/';
+
+        $images = $this->getUsedImages($output);
+
+        $this->publishImages($images, $output);
+        
+    }
+
+    private function publishImages($images, $output)
+    {
+        foreach ($images as $image) {
+            $source = $this->findInDesigns($image);
+
+            $this->copyFile($source, $output.$image);
+        }
+    }
+
+    private function getUsedImages($outputPath)
+    {
+        $files = $this->getFiles($outputPath);
+
+        $images = array();
+
+        foreach ($files as $file) {
+            if (is_file($outputPath.$file)) {
+                $content = file_get_contents($outputPath.$file);
+                $images = array_merge($images, $this->findImagesInHTML($content));
+                $images = array_merge($images, $this->findImagesInCSS($content));
+
+            }
+        }
+        
+        return $images;
+    }
+
+
+    public function findImagesInHTML($content)
+    {
+        $pattern = '/<[^>]*["\(]([^<>"\(\)]+\.(gif|jpg|jpeg|png))["\)][^>]*>/i';
+
+        preg_match_all($pattern, $content, $matches);
+
+        return $matches[1];
+    }
+
+
+    public function findImagesInCSS($content)
+    {
+        $pattern = '/url\(["\']?([^\)]+\.(gif|jpg|jpeg|png))["\']?\)/i';
+        
+        preg_match_all($pattern, $content, $matches);
+
+        return $matches[1];
+    }
+
     /**
      * Get all assets files contents into an array
      *
