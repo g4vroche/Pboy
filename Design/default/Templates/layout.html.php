@@ -12,6 +12,8 @@
     <div class="stories">
         <?php include 'output/stories.html' ?>
     </div>
+
+    <div class="title"><?php echo $site_title ?></div>
     <?php echo $content ?>
     <?php include 'js.php' ?>
 </body>
