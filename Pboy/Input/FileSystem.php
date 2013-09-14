@@ -105,9 +105,9 @@ class FileSystem extends InputAbstract
      * Overload method for sorting array purpose
      * to use with uasort.
      * Callback function handled MUST be named as folow :
-     * sortBy<Column><Direction> wherre direction is asc or desc.
+     * sortBy<Column><Direction> where direction is asc or desc.
      * eg. sortByDateDesc
-     * Direction may be omited and defauts to asc.
+     * Direction may be omited and defaults to asc.
      *
      */
     public function __call($name, $arguments)
