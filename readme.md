@@ -6,6 +6,12 @@ An attempt to create a basic static blog generator in PHP.
 
 Wrok in progress, already functional.
 
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/g4vroche/Pboy/badges/quality-score.png?s=e6b1d9c527f9e5b3982dfab32089cbae7c5cafd9)](https://scrutinizer-ci.com/g/g4vroche/Pboy/)
+
+[![Code Coverage](https://scrutinizer-ci.com/g/g4vroche/Pboy/badges/coverage.png?s=81e5c4dc79e407724c63d45e7104a5fc6aef4859)](https://scrutinizer-ci.com/g/g4vroche/Pboy/)
+
+
+
 
 Quick start :
 -------------
