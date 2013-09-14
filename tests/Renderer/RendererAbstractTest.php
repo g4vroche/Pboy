@@ -59,7 +59,61 @@ class RendererAbstractTest extends PHPUnit_Framework_TestCase
         $Stub->copyFile($source.$file, $dir.$source.$file);
 
         $this->assertTrue(file_exists($dir.$source.$file));
+    }
+
+    public function testWriteFileWrites()
+    {
+        $Stub = $this->getMockForAbstractClass('Pboy\Renderer\RendererAbstract');
+
+
+        $file = self::WRITABLE_PATH.'test.txt';
+
+        $content = 'foo';
+
+        $Stub->writeFile($file, $content);
+
+        $this->assertTrue(file_exists($file));
+
+        $this->assertEquals(
+            $content,
+            file_get_contents($file)
+        );
+
+    }
+
+
+    public function testFindInDesignsFindsTheFile()
+    {
+        $Stub = $this->getMockForAbstractClass('Pboy\Renderer\RendererAbstract');
         
+        $designs = ['bar', 'foo'];
+        $repository = 'tests/Renderer/designs/';
+        $file = 'test.html';
+
+        $this->assertEquals(
+            "$repository/foo/$file",
+            $Stub->findInDesigns($file, $designs, $repository)
+        );
+
+    }
+
+    /**
+     *
+     * @expectedException DomainException
+     */
+    public function testFindInDesignsThrowsAnExceptionWhenFileNotExists()
+    {
+        $Stub = $this->getMockForAbstractClass('Pboy\Renderer\RendererAbstract');
+        
+        $designs = ['bar', 'foo'];
+        $repository = 'tests/Renderer/designs/';
+        $file = 'foobar.html';
+
+        $this->assertEquals(
+            "$repository/foo/$file",
+            $Stub->findInDesigns($file, $designs, $repository)
+        );
+
 
     }
 }
