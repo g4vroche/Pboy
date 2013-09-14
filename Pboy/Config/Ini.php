@@ -77,6 +77,8 @@ class Ini extends ConfigAbstract
         if (is_null($offset)) {
             $this->data[] = $value;
         } else {
+            echo "$value\n";
+            print_r($offset);
             $this->data[$offset] = $value;
         }
     }
@@ -91,10 +93,12 @@ class Ini extends ConfigAbstract
     }
 
 
-    public function offsetGet($offset) {
+    public function &offsetGet($offset) {
         $this->loadIfNeeded($offset);
-
-        return isset($this->data[$offset]) ? $this->data[$offset] : null;
+        
+        if (isset($this->data[$offset])) {
+            return $this->data[$offset];
+        }
     }
 
 }
