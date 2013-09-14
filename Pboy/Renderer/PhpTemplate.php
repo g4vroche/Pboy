@@ -9,17 +9,6 @@ class PhpTemplate extends RendererAbstract
 
     private $vars = array();
 
-    /**
-     * Renders data to output
-     *
-     * @param array $items  Data list
-     */
-    public function render($items, $views)
-    {
-        foreach ($views as $view => $type) {
-            $this->renderView($view, $type, $items);
-        }
-    }
 
     /**
      * Append variables to an array whose elements

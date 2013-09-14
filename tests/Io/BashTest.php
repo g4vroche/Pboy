@@ -58,7 +58,7 @@ class BashTest extends PHPUnit_Framework_TestCase
                 ->method('options')
                 ->will($this->returnValue($config));
 
-        $Getopt = new Ulrichsg\Getopt;
+        $Getopt = new Pboy\Io\UlrichsgGetopt;
 
         
         $Bash = new Bash(array( 
@@ -89,6 +89,19 @@ class BashTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($arguments, $Bash->getOptions('test'));
     }
 
+    /**
+     * @dataProvider BashProvider
+     */
+    public function testHelp($Bash, $task)
+    {
+        $expects = 'Usage:  [options] [operands]
+Options:
+  -a                      
+  -b, --bar <arg>         
+  -f, --foo [<arg>]';
 
+        $this->assertEquals($expects, trim($Bash->help($task)));
+
+    }
 
 }

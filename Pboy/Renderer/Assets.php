@@ -9,10 +9,6 @@ use Pboy\Component\Component;
 class Assets extends RendererAbstract
 {
 
-    public function render($items, $views)
-    {
-    }
-
     public function beforeRenderViewHook($eventName, &$variables, &$object)
     {
         $cfg = $variables['cfg'];
