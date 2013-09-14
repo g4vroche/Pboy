@@ -77,8 +77,6 @@ class Ini extends ConfigAbstract
         if (is_null($offset)) {
             $this->data[] = $value;
         } else {
-            echo "$value\n";
-            print_r($offset);
             $this->data[$offset] = $value;
         }
     }
