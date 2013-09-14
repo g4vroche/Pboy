@@ -12,7 +12,7 @@ class Loader extends Component
         'shared' => array(),
     );
     
-    public function __construct($dependencies)
+    public function __construct($dependencies = array())
     {
         parent::__construct($dependencies);
 
