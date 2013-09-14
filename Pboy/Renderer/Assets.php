@@ -55,7 +55,7 @@ class Assets extends RendererAbstract
 
     private function getUsedImages($outputPath)
     {
-        $files = $this->getFiles($outputPath);
+        $files = $this->getDirectory($outputPath);
 
         $images = array();
 

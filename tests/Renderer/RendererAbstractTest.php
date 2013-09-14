@@ -12,15 +12,15 @@ class RendererAbstractTest extends PHPUnit_Framework_TestCase
     {
         $Stub = $this->getMockForAbstractClass('Pboy\Renderer\RendererAbstract');
 
-        $this->assertInternalType('array', $Stub->getFiles('.'));
+        $this->assertInternalType('array', $Stub->getDirectory('.'));
     }
 
     public function testGetFilesExcludeDotAndDoubleDotFiles()
     {
         $Stub = $this->getMockForAbstractClass('Pboy\Renderer\RendererAbstract');
         
-        $this->assertNotContains('.', $Stub->getFiles('.'));
-        $this->assertNotContains('..', $Stub->getFiles('.'));
+        $this->assertNotContains('.', $Stub->getDirectory('.'));
+        $this->assertNotContains('..', $Stub->getDirectory('.'));
     }
 
         
@@ -28,7 +28,7 @@ class RendererAbstractTest extends PHPUnit_Framework_TestCase
     {
         $Stub = $this->getMockForAbstractClass('Pboy\Renderer\RendererAbstract');
 
-        $this->assertContains('Pboy', $Stub->getFiles('.'));
+        $this->assertContains('Pboy', $Stub->getDirectory('.'));
     }
 
     public function testCreatePathIfNeeded()
