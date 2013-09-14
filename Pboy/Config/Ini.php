@@ -37,7 +37,7 @@ class Ini extends ConfigAbstract
      *
      * @param string $fileName  Path to config file
      */
-    public function load($fileName)
+    private function load($fileName)
     {
         $file = self::PATH.$fileName.self::SUFFIX;
 
