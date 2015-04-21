@@ -2,6 +2,10 @@
 PBoy 
 ====
 
+![Pboy](https://raw.githubusercontent.com/g4vroche/Pboy/master/Design/default/Img/pboy.png)
+
+
+
 An attempt to create a basic static blog generator in PHP.
 
 Wrok in progress, already functional.
